@@ -11,6 +11,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import NextArrow from "../NextArrow";
 import PrevArrow from "../PrevArrow";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const NewArrival = () => {
   var settings = {
@@ -21,30 +23,35 @@ const NewArrival = () => {
     autoplay: true,
     autoplaySpeed: 2000,
     nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />
+    prevArrow: <PrevArrow />,
   };
+
+  let [allData, setAllData] = useState([]);
+  useEffect(() => {
+    async function allData() {
+      let data = await axios.get("https://dummyjson.com/products");
+      setAllData(data.data.products);
+    }
+    allData();
+  }, []);
+
   return (
     <>
       <div className="">
         <Container>
           <h3 className="pb-4 font text-[39px] text-[#262626]">New Arrival</h3>
-            <Slider {...settings}>
-              <div>
-                <Product productImg={product1} productBadge={"10%"} />
+          <Slider {...settings}>
+            {allData.map((item) => (
+              <div className="px-2">
+                <Product
+                  productImg={item.thumbnail}
+                  productBadge={item.category}
+                  price={`$ ${item.price}`}
+                  title={item.title}
+                />
               </div>
-              <div>
-                <Product productImg={product2} productBadge={"New"} />
-              </div>
-              <div>
-                <Product productImg={product3} productBadge={"New"} />
-              </div>
-              <div>
-                <Product productImg={product4} productBadge={"New"} />
-              </div>
-               <div>
-                <Product productImg={product2} productBadge={"New"} />
-              </div>
-            </Slider>
+            ))}
+          </Slider>
         </Container>
       </div>
     </>
