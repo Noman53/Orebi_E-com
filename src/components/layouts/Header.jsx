@@ -6,7 +6,6 @@ import Image from "../Image";
 import Logo from "/src/assets/logo.png";
 import { FiUser, FiSearch, FiShoppingCart} from "react-icons/fi";
 import { HiMenuAlt2 } from "react-icons/hi";
-
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
