@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const Sales = () => {
   return (
-    <div className="pt-[170px] pb-[140px]">
+    <div className="pt-[50px] pb-[50px]">
       <Container>
         <Flex className={"gap-x-8.5 items-start"}>
           {/* Left Ad */}

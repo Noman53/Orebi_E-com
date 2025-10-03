@@ -9,7 +9,7 @@ import product12 from "/src/assets/Product12.png";
 const SpecialOffers = () => {
   return (
     <>
-    <div className="mt-20">
+    <div className="mt-20 mb-20">
         <Container>
           <h3 className="pb-4 font text-[39px] text-[#262626]">Special Offers</h3>
           <Flex className="gap-x-7">
