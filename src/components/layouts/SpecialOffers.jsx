@@ -12,7 +12,7 @@ const SpecialOffers = () => {
     <div className="mt-20 mb-20">
         <Container>
           <h3 className="pb-4 font text-[39px] text-[#262626]">Special Offers</h3>
-          <Flex className="gap-x-7">
+          <Flex className="gap-x-7 ">
             <Product productImg={product9} productBadge={"New"}/>
             <Product productImg={product10} productBadge={"New"}/>
             <Product productImg={product11} productBadge={"New"}/>

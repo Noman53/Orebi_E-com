@@ -9,7 +9,7 @@ import Heading from "./Heading";
 const Product = ({productImg, productBadge, title, price}) => {
   return (
     <>
-      <div className="relative group bg-red-300 h-[350px] flex flex-col justify-between ">
+      <div className="relative group bg-gray-50 h-[350px] flex flex-col justify-between ">
         <Image imgSrc={productImg}/>
         <Badge badgeText={productBadge} className={"absolute top-2 left-2"} />
         {/* Black overlay on hover */}
