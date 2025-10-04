@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import React from "react";
 import Container from "../Container";
 import Flex from "../Flex";
 import Image from "../Image";
 import Logo from "/src/assets/logo.png";
-import { FiUser, FiSearch, FiShoppingCart} from "react-icons/fi";
+import { FiUser, FiSearch, FiShoppingCart } from "react-icons/fi";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
-// Dummy product data for suggestions and search results
 const products = [
   "Black T-shirt",
   "White Sneakers",
@@ -27,10 +26,31 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [showLogin, setShowLogin] = useState(false); // Added state for login modal
+  const [showLogin, setShowLogin] = useState(false);
+  const [showCategory, setShowCategory] = useState(false);
   const navigate = useNavigate();
+  const categoryRef = useRef(null);
 
-  // Update suggestions as user types
+  // Click outside to close category menu
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(event.target)
+      ) {
+        setShowCategory(false);
+      }
+    }
+    if (showCategory) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showCategory]);
+
   const handleChange = (e) => {
     const value = e.target.value;
     setSearch(value);
@@ -46,22 +66,18 @@ const Header = () => {
     }
   };
 
-  // Handle search submit (icon click or enter)
   const handleSearch = (keyword) => {
     const query = keyword || search;
     if (query.trim().length === 0) return;
-    // Example: navigate to /search?q=your-keyword
     navigate(`/search?q=${encodeURIComponent(query)}`);
     setShowSuggestions(false);
   };
 
-  // Handle suggestion click
   const handleSuggestionClick = (item) => {
     setSearch(item);
     handleSearch(item);
   };
 
-  // Handle enter key
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -121,9 +137,33 @@ const Header = () => {
         <Container>
           <Flex className="justify-between items-center">
             {/* Left: Shop by Category */}
-            <div className="flex items-center gap-3">
-              <HiMenuAlt2 className="text-[22px] text-[#000000]" />
-              <span className="text-[14px] text-[#262626] font-normal">Shop by Category</span>
+            <div className="relative flex items-center gap-3" ref={categoryRef}>
+              <div
+                className="flex items-center gap-2 cursor-pointer"
+                onClick={() => setShowCategory((prev) => !prev)}
+              >
+                <HiMenuAlt2 className="text-[22px] text-[#000000]" />
+                <span className="text-[14px] text-[#262626] font-normal">Shop by Category</span>
+              </div>
+              {/* Category dropdown menu */}
+              {showCategory && (
+                <div className="absolute left-0 top-[40px] w-[140px] bg-white border border-[#e5e5e5] rounded-lg shadow-lg z-20 p-4">
+                  <ul className="flex flex-col gap-2">
+                    <Link to={"/"}>
+                      <li className="cursor-pointer hover:bg-[#2dbae9] px-2 py-1 rounded">Beauty</li>
+                    </Link>
+                    <Link to={"/"}>
+                      <li className="cursor-pointer hover:bg-[#2dbae9] px-2 py-1 rounded">Fragrances</li>
+                    </Link>
+                    <Link to={"/"}>
+                      <li className="cursor-pointer hover:bg-[#2dbae9] px-2 py-1 rounded">Furniture</li>
+                    </Link>
+                    <Link to={"/"}>
+                      <li className="cursor-pointer hover:bg-[#2dbae9] px-2 py-1 rounded">Groceries</li>
+                    </Link>
+                  </ul>
+                </div>
+              )}
             </div>
             {/* Center: Search */}
             <div className="flex-1 flex justify-center">
